@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>은성자수 홈페이지 배포 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFAF6; --paper:#FFFFFF; --ink:#1F1D1A; --muted:#6B665E; --line:#E4DFD4;
+  --accent:#0E6B6B; --accent-soft:#E3F1EE; --warn:#B4501E; --warn-soft:#FBEDE3; --tip-soft:#F3EFE5;
+  --code:#F1EFEA;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16151A; --paper:#1F1E24; --ink:#EDEAE3; --muted:#A39E93; --line:#34323B;
+    --accent:#5FC1B5; --accent-soft:#1B3331; --warn:#F0A06E; --warn-soft:#3A2418; --tip-soft:#2A2826; --code:#2A2830;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16151A; --paper:#1F1E24; --ink:#EDEAE3; --muted:#A39E93; --line:#34323B;
+  --accent:#5FC1B5; --accent-soft:#1B3331; --warn:#F0A06E; --warn-soft:#3A2418; --tip-soft:#2A2826; --code:#2A2830;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+.page{max-width:820px;margin:0 auto;padding:48px 24px 96px}
+h1,h2,h3{font-family:"Noto Serif KR",serif;font-weight:700;line-height:1.3;text-wrap:balance;margin:0}
+h1{font-size:34px}
+h2{font-size:24px;padding-top:56px;margin-top:24px;border-top:1px solid var(--line)}
+h3{font-size:17px;margin-top:28px}
+p{margin:12px 0}
+a{color:var(--accent);word-break:break-all}
+.sub{color:var(--muted);font-size:15px;margin-top:8px}
+.badge{display:inline-block;font-size:12px;letter-spacing:.14em;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:4px;font-weight:700;margin-bottom:14px}
+/* overview */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:28px 0 8px}
+.flow div{background:var(--paper);border:1px solid var(--line);padding:16px 14px;font-size:14px;line-height:1.5}
+.flow b{display:block;font-size:12px;color:var(--accent);letter-spacing:.1em;margin-bottom:6px}
+.flow small{display:block;color:var(--muted);margin-top:6px;font-size:12.5px}
+/* checklist */
+.check{background:var(--paper);border:1px solid var(--line);padding:6px 20px;margin:18px 0}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check label:last-child{border-bottom:0}
+.check input{width:18px;height:18px;margin-top:6px;accent-color:var(--accent);flex:none}
+.check span small{display:block;color:var(--muted);font-size:13.5px}
+/* steps */
+.step{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:18px 0;border-bottom:1px dashed var(--line)}
+.step:last-of-type{border-bottom:0}
+.step .n{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.step h4{margin:4px 0 6px;font-size:16.5px;font-weight:700}
+.step p{margin:6px 0;font-size:15.5px}
+.step .see{color:var(--muted);font-size:14px;border-left:3px solid var(--line);padding-left:12px;margin-top:8px}
+kbd,code{font-family:Consolas,"Noto Sans KR",monospace;background:var(--code);padding:2px 7px;border-radius:4px;font-size:14px}
+pre{background:var(--code);padding:14px 16px;border-radius:6px;overflow-x:auto;font-size:13.5px;line-height:1.6;margin:10px 0}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:12px 0;background:var(--paper)}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--tip-soft);font-weight:700;white-space:nowrap}
+td code{white-space:nowrap}
+.tbl{overflow-x:auto}
+.note{background:var(--tip-soft);border-left:4px solid var(--accent);padding:12px 16px;margin:16px 0;font-size:15px}
+.warn{background:var(--warn-soft);border-left:4px solid var(--warn);padding:12px 16px;margin:16px 0;font-size:15px}
+.note b,.warn b{display:block;margin-bottom:2px}
+.faq dt{font-weight:700;margin-top:18px}
+.faq dd{margin:4px 0 0 0;color:var(--muted)}
+.toc{background:var(--paper);border:1px solid var(--line);padding:18px 22px;margin:28px 0;font-size:15px}
+.toc ol{margin:6px 0 0;padding-left:20px}
+.toc li{padding:3px 0}
+@media (max-width:640px){.flow{grid-template-columns:1fr 1fr}h1{font-size:28px}.page{padding:32px 18px 72px}}
+@media print{.check input{display:none}}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="badge">EUNSUNG EMBROIDERY · 배포 가이드</div>
+  <h1>은성자수 홈페이지<br>인터넷에 올리는 방법</h1>
+  <p class="sub">도메인 사기 → 깃허브에 올리기 → 도메인 연결 → 나중에 고치기. 컴퓨터를 잘 몰라도 순서대로 따라 하면 됩니다. 총 1~2시간, 비용은 도메인값(1년에 약 1~2만 원)뿐입니다.</p>
+
+  <div class="flow">
+    <div><b>1단계</b>가비아에서 도메인 사기<small>홈페이지 "주소"를 삽니다</small></div>
+    <div><b>2단계</b>깃허브에 파일 올리기<small>홈페이지 "집"을 무료로 빌립니다</small></div>
+    <div><b>3단계</b>배포 켜기<small>인터넷에 공개합니다</small></div>
+    <div><b>4단계</b>주소와 집 연결<small>내 도메인으로 열리게 합니다</small></div>
+  </div>
+
+  <div class="toc">
+    <b>차례</b>
+    <ol>
+      <li><a href="#prep">시작하기 전 준비물</a></li>
+      <li><a href="#s1">가비아에서 도메인 사기</a></li>
+      <li><a href="#s2">깃허브 계정 · 저장소 만들고 파일 올리기</a></li>
+      <li><a href="#s3">배포 켜기 (GitHub Pages)</a></li>
+      <li><a href="#s4">도메인 연결하기</a></li>
+      <li><a href="#s5">나중에 내용 고치는 방법</a></li>
+      <li><a href="#faq">막힐 때 보는 곳</a></li>
+    </ol>
+  </div>
+
+  <h2 id="prep">시작하기 전 준비물</h2>
+  <div class="check">
+    <label><input type="checkbox"><span>홈페이지 파일 폴더 <b>은성자수-새사이트</b><small>안에 <code>index.html</code> 파일 1개와 <code>img</code> 폴더가 있어야 합니다. 이 폴더를 압축(zip)해서 사촌동생에게 전달하세요.</small></span></label>
+    <label><input type="checkbox"><span>깃허브(GitHub) 계정<small>사촌동생 아이디로 진행합니다. 없으면 github.com 에서 무료 가입 (이메일만 있으면 됨).</small></span></label>
+    <label><input type="checkbox"><span>가비아 계정과 결제 카드<small>도메인 구매용. 가비아 가입은 무료입니다.</small></span></label>
+    <label><input type="checkbox"><span>프로그램 하나: <b>GitHub Desktop</b><small>사진 파일이 270개라 웹 화면으로는 한 번에 못 올립니다. 이 프로그램으로 올리면 한 번에 됩니다. <a href="https://desktop.github.com" target="_blank" rel="noopener">desktop.github.com</a> 에서 무료 다운로드.</small></span></label>
+  </div>
+  <div class="note"><b>미리 알아둘 단어 3개</b>
+    <b style="display:inline">도메인</b> = 홈페이지 주소 (예: eunsungjasu.com). &nbsp;
+    <b style="display:inline">저장소(Repository)</b> = 깃허브 안에 만드는 폴더 하나. 여기에 홈페이지 파일을 넣습니다. &nbsp;
+    <b style="display:inline">배포</b> = 넣어둔 파일을 인터넷에 공개하는 것.
+  </div>
+
+  <h2 id="s1">1단계 · 가비아에서 도메인 사기</h2>
+  <p>이미 갖고 계신 <b>컴퓨터자수.net</b> 을 그대로 쓰셔도 됩니다. 그 경우 이 단계는 건너뛰고, 4단계에서 "가비아" 대신 그 도메인을 산 업체의 관리 화면에서 똑같이 설정하면 됩니다. 새 영문 도메인(예: eunsungjasu.com)을 하나 더 사서 쓰는 것을 권합니다. 한글 도메인은 연결 과정에서 문제가 생길 수 있습니다.</p>
+
+  <div class="step"><div class="n">1</div><div><h4>가비아 접속 후 로그인</h4><p><a href="https://www.gabia.com" target="_blank" rel="noopener">www.gabia.com</a> → 오른쪽 위 <b>로그인</b> (없으면 회원가입, 무료).</p></div></div>
+  <div class="step"><div class="n">2</div><div><h4>원하는 주소 검색</h4><p>첫 화면 가운데 검색창에 원하는 이름을 영문으로 입력. 예: <code>eunsungjasu</code></p><p class="see">결과 목록에 .com / .co.kr / .kr 등이 나옵니다. "등록 가능"이라고 표시된 것만 살 수 있습니다. <b>.com</b> 또는 <b>.co.kr</b> 을 고르세요.</p></div></div>
+  <div class="step"><div class="n">3</div><div><h4>장바구니 → 결제</h4><p>원하는 주소 옆 <b>신청하기</b> → 등록 기간 선택(1년 또는 2년) → <b>결제하기</b>.</p><div class="warn"><b>같이 권하는 부가서비스는 전부 체크 해제</b>웹호스팅, 홈페이지 제작, 보안 서비스 등은 필요 없습니다. 도메인 값만 내면 됩니다 (.com 기준 1년 약 15,000~20,000원).</div></div></div>
+  <div class="step"><div class="n">4</div><div><h4>관리 화면 위치 확인해 두기 (4단계에서 씁니다)</h4><p>오른쪽 위 <b>My가비아</b> → <b>서비스 관리</b> → <b>도메인</b> 탭 → 방금 산 도메인 옆 <b>관리</b> 버튼 → <b>DNS 정보</b> 줄의 <b>DNS 설정</b>.</p><p class="see">여기서 "레코드 추가"라는 버튼이 보이면 제대로 찾은 것입니다. 지금은 아무것도 만지지 말고 창을 닫아도 됩니다.</p></div></div>
+
+  <h2 id="s2">2단계 · 깃허브에 파일 올리기</h2>
+  <p>사촌동생 계정으로 진행합니다. 컴퓨터에 <b>GitHub Desktop</b> 을 먼저 설치해 두세요.</p>
+
+  <h3>2-A. 저장소(폴더) 만들기 — 인터넷 화면에서</h3>
+  <div class="step"><div class="n">1</div><div><h4>github.com 로그인</h4><p><a href="https://github.com" target="_blank" rel="noopener">github.com</a> → Sign in.</p></div></div>
+  <div class="step"><div class="n">2</div><div><h4>새 저장소 만들기</h4><p>오른쪽 위 <b>+</b> 버튼 → <b>New repository</b>.</p></div></div>
+  <div class="step"><div class="n">3</div><div><h4>이름 정하고 만들기</h4>
+    <p><b>Repository name</b> 칸에 영문으로 <code>eunsung-site</code> 입력 (띄어쓰기 없이).</p>
+    <p><b>Public</b> 을 선택 (Private 이면 무료 공개가 안 됩니다).</p>
+    <p>나머지 체크박스("Add a README" 등)는 <b>전부 건드리지 않고</b> 맨 아래 초록색 <b>Create repository</b> 클릭.</p>
+    <p class="see">파란색 안내문이 잔뜩 있는 화면이 나오면 성공입니다. 이 화면은 닫아도 됩니다.</p></div></div>
+
+  <h3>2-B. 파일 올리기 — GitHub Desktop 프로그램에서</h3>
+  <div class="step"><div class="n">4</div><div><h4>GitHub Desktop 열고 로그인</h4><p>처음 실행하면 <b>Sign in to GitHub.com</b> 버튼이 있습니다. 클릭하면 브라우저가 열리고 로그인 → "Authorize" 를 누르면 프로그램으로 돌아옵니다.</p></div></div>
+  <div class="step"><div class="n">5</div><div><h4>방금 만든 저장소를 내 컴퓨터로 가져오기</h4><p>메뉴 <b>File</b> → <b>Clone repository</b> → 목록에서 <b>eunsung-site</b> 선택 → <b>Local path</b>(저장 위치)는 그대로 두고 → <b>Clone</b>.</p><p class="see">내 컴퓨터 <code>문서\GitHub\eunsung-site</code> 폴더가 생깁니다. (Local path 에 적힌 경로가 그 위치입니다.)</p></div></div>
+  <div class="step"><div class="n">6</div><div><h4>홈페이지 파일을 그 폴더에 복사</h4><p>전달받은 <b>은성자수-새사이트</b> 압축을 풀고, 그 안의 <code>index.html</code> 과 <code>img</code> 폴더를 위 <code>eunsung-site</code> 폴더 안에 복사해 넣습니다.</p>
+    <div class="warn"><b>폴더 안에 또 폴더가 들어가면 안 됩니다</b><code>eunsung-site</code> 폴더를 열었을 때 바로 <code>index.html</code> 이 보여야 합니다. <code>eunsung-site\은성자수-새사이트\index.html</code> 처럼 되면 홈페이지가 안 뜹니다.</div></div></div>
+  <div class="step"><div class="n">7</div><div><h4>올리기 (Commit → Push)</h4>
+    <p>GitHub Desktop 으로 돌아오면 왼쪽에 파일 목록이 쭉 나타납니다 (270개쯤).</p>
+    <p>왼쪽 아래 <b>Summary</b> 칸에 아무 말이나 입력 (예: <code>홈페이지 올림</code>) → 파란색 <b>Commit to main</b> 클릭.</p>
+    <p>그다음 위쪽에 나타나는 <b>Push origin</b> 버튼 클릭. 1~2분 기다리면 끝.</p>
+    <p class="see">github.com 의 eunsung-site 페이지를 새로고침하면 index.html 과 img 폴더가 보입니다.</p></div></div>
+
+  <h2 id="s3">3단계 · 배포 켜기 (GitHub Pages)</h2>
+  <div class="step"><div class="n">1</div><div><h4>저장소 설정으로</h4><p>github.com 에서 <b>eunsung-site</b> 저장소 페이지 → 위쪽 탭 맨 오른쪽 <b>Settings</b> (톱니바퀴).</p></div></div>
+  <div class="step"><div class="n">2</div><div><h4>Pages 메뉴</h4><p>왼쪽 메뉴에서 <b>Pages</b> 클릭.</p></div></div>
+  <div class="step"><div class="n">3</div><div><h4>어디서 공개할지 고르기</h4>
+    <p><b>Build and deployment</b> 아래 <b>Source</b> 는 <code>Deploy from a branch</code> 그대로.</p>
+    <p><b>Branch</b> 에서 <code>None</code> → <code>main</code> 으로 바꾸고, 옆 칸은 <code>/ (root)</code> → <b>Save</b>.</p></div></div>
+  <div class="step"><div class="n">4</div><div><h4>1~3분 기다린 뒤 새로고침</h4>
+    <p>같은 화면 맨 위에 <b>Your site is live at https://아이디.github.io/eunsung-site/</b> 라고 뜹니다. <b>Visit site</b> 를 누르면 홈페이지가 열립니다.</p>
+    <p class="see">이 주소는 이미 누구에게나 공유 가능합니다. 도메인 연결(4단계)은 이 주소를 예쁜 주소로 바꾸는 작업입니다.</p></div></div>
+
+  <h2 id="s4">4단계 · 도메인 연결하기</h2>
+  <p>깃허브와 가비아 양쪽에 각각 한 번씩 설정합니다. 예시 도메인은 <code>eunsungjasu.com</code>, 깃허브 아이디는 <code>아이디</code> 라고 쓰겠습니다. 실제 값으로 바꿔 넣으세요.</p>
+
+  <h3>4-A. 깃허브 쪽</h3>
+  <div class="step"><div class="n">1</div><div><h4>Settings → Pages → Custom domain</h4><p>3단계와 같은 화면 아래쪽 <b>Custom domain</b> 칸에 <code>eunsungjasu.com</code> 입력 → <b>Save</b>.</p><p class="see">"DNS check in progress" 또는 빨간 경고가 떠도 정상입니다. 가비아 설정을 아직 안 했기 때문입니다.</p></div></div>
+
+  <h3>4-B. 가비아 쪽</h3>
+  <div class="step"><div class="n">2</div><div><h4>DNS 설정 화면 열기</h4><p>1단계 4번에서 봐둔 곳: <b>My가비아 → 서비스 관리 → 도메인 → 관리 → DNS 설정</b>. 화면 안 <b>설정</b> 또는 <b>레코드 수정</b> 버튼을 누르면 편집 모드가 됩니다.</p></div></div>
+  <div class="step"><div class="n">3</div><div><h4>레코드 5줄 추가</h4>
+    <p><b>레코드 추가</b> 를 눌러 아래 표대로 한 줄씩 넣습니다. 이미 있는 줄은 지우지 않아도 되지만, "@" 로 시작하는 A 레코드가 다른 값으로 이미 있으면 그 줄은 지웁니다.</p>
+    <div class="tbl"><table>
+      <tr><th>타입</th><th>호스트</th><th>값 / 위치</th><th>TTL</th></tr>
+      <tr><td>A</td><td><code>@</code></td><td><code>185.199.108.153</code></td><td>기본값(3600)</td></tr>
+      <tr><td>A</td><td><code>@</code></td><td><code>185.199.109.153</code></td><td>기본값</td></tr>
+      <tr><td>A</td><td><code>@</code></td><td><code>185.199.110.153</code></td><td>기본값</td></tr>
+      <tr><td>A</td><td><code>@</code></td><td><code>185.199.111.153</code></td><td>기본값</td></tr>
+      <tr><td>CNAME</td><td><code>www</code></td><td><code>아이디.github.io.</code> <small>(사촌동생 깃허브 아이디, 맨 끝에 점)</small></td><td>기본값</td></tr>
+    </table></div>
+    <p>다 넣었으면 <b>저장</b>. "적용되었습니다" 안내가 나옵니다.</p>
+    <div class="note"><b>CNAME 값 끝의 점(.)</b>가비아는 끝에 점을 붙여야 저장되는 경우가 있습니다. 점을 붙였는데 오류가 나면 점을 빼고 다시 저장해 보세요.</div></div></div>
+  <div class="step"><div class="n">4</div><div><h4>기다리기 (10분 ~ 길면 하루)</h4><p>브라우저 주소창에 <code>eunsungjasu.com</code> 을 쳐서 홈페이지가 뜨면 성공. 안 뜨면 시간을 두고 다시 확인하세요. 보통 30분 안에 됩니다.</p></div></div>
+  <div class="step"><div class="n">5</div><div><h4>자물쇠(https) 켜기</h4><p>연결이 된 뒤 깃허브 <b>Settings → Pages</b> 로 돌아가면 Custom domain 아래 초록색 <b>DNS check successful</b> 이 보입니다. 그 밑 <b>Enforce HTTPS</b> 체크박스를 켜세요. 회색으로 눌리지 않으면 1시간쯤 뒤 다시 시도.</p></div></div>
+
+  <h2 id="s5">5단계 · 나중에 내용 고치는 방법</h2>
+  <p>홈페이지 내용은 전부 <code>index.html</code> 파일 한 개 안에 글자로 들어 있습니다. 파일을 고치고 → GitHub Desktop 에서 올리면 → 1~2분 뒤 인터넷에 반영됩니다.</p>
+
+  <h3>글자 바꾸기 (전화번호, 주소, 문구)</h3>
+  <div class="step"><div class="n">1</div><div><h4>파일 열기</h4><p><code>문서\GitHub\eunsung-site\index.html</code> 을 마우스 오른쪽 클릭 → <b>연결 프로그램</b> → <b>메모장</b>. (더 보기 편한 무료 프로그램: <a href="https://code.visualstudio.com" target="_blank" rel="noopener">VS Code</a>)</p></div></div>
+  <div class="step"><div class="n">2</div><div><h4>찾아서 바꾸기</h4><p><kbd>Ctrl</kbd>+<kbd>H</kbd> → "찾을 내용"에 예전 글자, "바꿀 내용"에 새 글자 → <b>모두 바꾸기</b>.</p><p class="see">전화번호처럼 여러 곳(상단 버튼, 고객센터, 하단)에 같은 글자가 있으면 "모두 바꾸기"가 한 번에 처리합니다.</p></div></div>
+  <div class="step"><div class="n">3</div><div><h4>저장 후 올리기</h4><p><kbd>Ctrl</kbd>+<kbd>S</kbd> 저장 → GitHub Desktop 열기 → 왼쪽에 index.html 이 보이면 Summary 에 <code>전화번호 수정</code> 같은 메모 → <b>Commit to main</b> → <b>Push origin</b>.</p></div></div>
+  <div class="warn"><b>꺾쇠 괄호 &lt; &gt; 안의 영문은 건드리지 마세요</b>화면에 보이는 한글 문구만 바꾸면 안전합니다. <code>&lt;div class="..."&gt;</code> 같은 부분을 지우면 화면이 깨집니다. 깨졌으면 GitHub Desktop 에서 파일을 오른쪽 클릭 → <b>Discard changes</b> 로 되돌릴 수 있습니다.</div>
+
+  <h3>제품 사진 추가하기</h3>
+  <div class="step"><div class="n">1</div><div><h4>사진 파일 넣기</h4><p>사진을 영문 이름(예: <code>new01.jpg</code>)으로 바꿔 <code>eunsung-site\img\products</code> 폴더에 넣습니다. 한글 이름은 피하세요. 흰 배경 사진이 제일 예쁘게 나옵니다.</p></div></div>
+  <div class="step"><div class="n">2</div><div><h4>목록에 한 줄 추가</h4><p>index.html 에서 <kbd>Ctrl</kbd>+<kbd>F</kbd> 로 <code>const ITEMS</code> 를 찾습니다. 바로 뒤 <code>[</code> 다음에 아래 한 줄을 붙여 넣습니다 (끝의 쉼표까지).</p>
+<pre><code>{"c":"char","t":"곰돌이 와펜 8x9 사이즈","f":"new01.jpg"},</code></pre>
+    <p><code>"c"</code> 는 분야 코드, <code>"t"</code> 는 화면에 보일 제목, <code>"f"</code> 는 사진 파일 이름입니다.</p>
+    <div class="tbl"><table>
+      <tr><th>분야</th><th>코드</th><th>분야</th><th>코드</th><th>분야</th><th>코드</th></tr>
+      <tr><td>악세사리자수</td><td><code>acc</code></td><td>유치원마크</td><td><code>kinder</code></td><td>각종마크</td><td><code>mark</code></td></tr>
+      <tr><td>보풀자수</td><td><code>chenille</code></td><td>캐릭터자수</td><td><code>char</code></td><td>가방자수</td><td><code>bag</code></td></tr>
+      <tr><td>메탈핸드메이드</td><td><code>metal</code></td><td>네임택</td><td><code>nametag</code></td><td>각종명찰</td><td><code>badge</code></td></tr>
+    </table></div></div></div>
+  <div class="step"><div class="n">3</div><div><h4>저장 후 올리기</h4><p>위와 똑같이 저장 → GitHub Desktop → Commit → Push.</p></div></div>
+
+  <div class="note"><b>제일 쉬운 방법</b>파일을 직접 고치기 부담스러우면, 바꿀 내용(예: "전화번호를 010-0000-0000 으로", "이 사진 5장을 캐릭터자수에 추가")을 Claude 에게 말하고 고쳐진 <code>index.html</code> 을 받아서 GitHub Desktop 으로 올리기만 해도 됩니다.</div>
+
+  <h2 id="faq">막힐 때 보는 곳</h2>
+  <dl class="faq">
+    <dt>주소를 열면 "404 There isn't a GitHub Pages site here" 라고 나옵니다.</dt>
+    <dd>3단계 Branch 가 <code>main</code> / <code>/ (root)</code> 로 저장됐는지, 그리고 저장소 첫 화면에 <code>index.html</code> 이 바로 보이는지 확인하세요. 폴더 안에 폴더로 들어가 있으면 404가 납니다. 저장 직후라면 3분만 기다려 보세요.</dd>
+    <dt>홈페이지는 뜨는데 사진이 하나도 안 보입니다.</dt>
+    <dd><code>img</code> 폴더가 같이 올라갔는지 github.com 에서 확인하세요. 폴더 이름은 소문자 <code>img</code> 여야 합니다.</dd>
+    <dt>도메인을 쳐도 "사이트에 연결할 수 없음"이 나옵니다.</dt>
+    <dd>가비아 DNS 반영 대기 중일 수 있습니다(최대 하루). 하루가 지나도 안 되면 A 레코드 4줄의 숫자 오타, 호스트가 <code>@</code> 인지, CNAME 값의 아이디 철자를 확인하세요.</dd>
+    <dt>깃허브에 "Enforce HTTPS" 가 회색이라 못 누릅니다.</dt>
+    <dd>DNS 연결 확인이 끝나야 활성화됩니다. 초록색 "DNS check successful" 이 뜬 뒤 1시간쯤 후 다시 시도하세요.</dd>
+    <dt>GitHub Desktop 에 "Push origin" 버튼이 안 보입니다.</dt>
+    <dd>먼저 Summary 에 글자를 넣고 <b>Commit to main</b> 을 눌러야 그 뒤에 나타납니다.</dd>
+    <dt>도메인은 매년 돈을 내야 하나요?</dt>
+    <dd>네, 도메인만 1년마다 갱신(약 1~2만 원). 가비아에서 자동 연장을 켜두면 잊지 않습니다. 깃허브 호스팅은 계속 무료입니다.</dd>
+    <dt>사촌동생 계정으로 만들었는데 나중에 제 계정으로 옮길 수 있나요?</dt>
+    <dd>가능합니다. 저장소 Settings 맨 아래 <b>Transfer ownership</b> 으로 다른 아이디에게 넘길 수 있습니다. 넘긴 뒤 3단계와 4-A 를 새 계정에서 한 번 더 하면 됩니다.</dd>
+  </dl>
+
+  <p class="sub" style="margin-top:48px">2026-09-07 작성 · 은성자수 홈페이지 시안 기준 · 현재 임시 확인 주소: <a href="https://lhaa0130-hash.github.io/eunsung-embroidery/" target="_blank" rel="noopener">lhaa0130-hash.github.io/eunsung-embroidery</a></p>
+</div>
+</body>
+</html>
